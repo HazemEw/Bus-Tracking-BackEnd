@@ -8,6 +8,7 @@ import com.example.login.service.implementations.AuthServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("/api/auth")
 @RestController
 public class AuthController {
@@ -21,7 +22,7 @@ public class AuthController {
    }
 
    @PostMapping("/login")
-   @CrossOrigin(origins = "http://127.0.0.1:5500")
+
    public AuthResponse loginAdmin(@RequestBody LoginRequest loginRequest){
 
       return adminService.login(loginRequest);

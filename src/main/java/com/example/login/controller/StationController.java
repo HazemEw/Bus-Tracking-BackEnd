@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("api/stations")
 @AllArgsConstructor
 public class StationController {
 
     private final StationService stationService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5500")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping()
+    @PostMapping("/add")
     public StationDto addStation(@RequestBody StationDto stationDto){
         return stationService.addStation(stationDto);
     }

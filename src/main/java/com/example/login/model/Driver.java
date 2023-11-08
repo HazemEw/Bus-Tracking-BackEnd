@@ -20,6 +20,7 @@ public class Driver {
     private String lastName;
     private String phone;
     private String email;
+    private String licenseNumber;
     private String username;
     private String password;
 
