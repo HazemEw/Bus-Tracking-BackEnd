@@ -4,6 +4,7 @@ import com.example.login.dtos.StationDto;
 import com.example.login.exceptions.DuplicateException;
 import com.example.login.exceptions.ResourceNotFoundException;
 import com.example.login.mapper.StationMapper;
+import com.example.login.model.RouteStation;
 import com.example.login.model.Station;
 import com.example.login.repo.StationRepo;
 import com.example.login.service.StationService;
@@ -24,6 +25,7 @@ public class StationServiceImpl implements StationService {
     public StationDto addStation(StationDto stationDto) {
         if (!stationRepo.findByName(stationDto.getName()).isPresent()) {
             Station station = stationMapper.mapToStation(stationDto);
+            station.setRoutes(new ArrayList<RouteStation>());
             stationRepo.save(station);
             return stationDto;
         } else

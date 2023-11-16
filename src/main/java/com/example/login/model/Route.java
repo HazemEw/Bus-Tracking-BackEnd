@@ -2,7 +2,6 @@ package com.example.login.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,24 +9,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Station")
-@Builder
-public class Station {
-
+@NoArgsConstructor
+@Entity
+@Table(name = "route")
+public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    private double latitude;
-    private double longitude;
 
     @OneToMany(
-            mappedBy = "station",
+            mappedBy = "route",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<RouteStation> routes ;
+    private List<RouteStation> stations = new ArrayList<>();
+
+    public void addStation(Station station , Long order) {
+        RouteStation routeStation = new RouteStation(this,station,order);
+        stations.add(routeStation);
+        station.getRoutes().add(routeStation);
+    }
 }

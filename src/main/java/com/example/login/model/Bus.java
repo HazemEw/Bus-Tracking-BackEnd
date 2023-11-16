@@ -20,4 +20,6 @@ public class Bus {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "driver_id",referencedColumnName = "id")
     private Driver driver;
+
+
 }

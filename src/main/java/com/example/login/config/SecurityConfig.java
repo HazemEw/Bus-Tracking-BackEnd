@@ -56,6 +56,8 @@ public class SecurityConfig {
                 .permitAll()
                 .requestMatchers("/api/drivers/**")
                 .permitAll()
+                .requestMatchers("/api/routes/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
