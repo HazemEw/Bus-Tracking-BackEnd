@@ -37,4 +37,18 @@ public class StationController {
     public void deleteStation(@PathVariable Long id){
         stationService.deleteStation(id);
     }
+
+    @GetMapping("/nearestStation")
+    public StationDto findNearestStation(
+            @RequestParam double userLat,
+            @RequestParam double userLng) {
+        return stationService.findNearestStation(userLat,userLng);
+    }
+
+    @GetMapping("/nearestStations")
+    public List<StationDto> findNearestStations(
+            @RequestParam double userLat,
+            @RequestParam double userLng) {
+        return stationService.findNearestStations(userLat,userLng);
+    }
 }

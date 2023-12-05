@@ -53,6 +53,16 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    public List<DriverDto> getUnassignedDriversWithBus() {
+        List<Driver> unassignedDrivers = driverRepo.findAllByBusIsNull();
+        List<DriverDto> unassignedDriversDto= new ArrayList<>();
+        unassignedDrivers.stream().forEach(driver -> {
+            unassignedDriversDto.add(driverMapper.mapToDto(driver));
+        });
+        return unassignedDriversDto;
+    }
+
+    @Override
     public void deleteDriver(Long driverId) {
       Driver driver = driverRepo.findById(driverId).orElseThrow(
               ()-> new ResourceNotFoundException("Driver","id",driverId)

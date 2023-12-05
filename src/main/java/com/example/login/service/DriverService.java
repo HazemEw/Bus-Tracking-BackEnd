@@ -9,5 +9,7 @@ public interface DriverService {
     DriverDto addDriver(DriverDto driverDto);
     DriverDto getDriver(Long DriverId);
     List<DriverDto> getDrivers();
+
+    List<DriverDto> getUnassignedDriversWithBus();
     void deleteDriver(Long driverId);
 }

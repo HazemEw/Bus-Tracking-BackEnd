@@ -31,6 +31,13 @@ public class DriverController {
     public List<DriverDto> getDrivers(){
         return driverService.getDrivers();
     }
+
+    @GetMapping("/unassigned")
+    public List<DriverDto> getUnassignedDriversWithBus(){
+        return driverService.getUnassignedDriversWithBus();
+    }
+
+
     @DeleteMapping("/{id}")
     public void deleteDriver(@PathVariable Long id){
         driverService.deleteDriver(id);

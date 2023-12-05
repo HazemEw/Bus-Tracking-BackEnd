@@ -54,4 +54,38 @@ public class StationServiceImpl implements StationService {
         );
         stationRepo.delete(station);
     }
+
+    public StationDto findNearestStation(double userLat, double userLng) {
+        Station station = stationRepo.findAll().stream()
+                .min((station1, station2) -> Double.compare(
+                        calculateDistance(userLat, userLng, station1.getLatitude(), station1.getLongitude()),
+                        calculateDistance(userLat, userLng, station2.getLatitude(), station2.getLongitude())))
+                .orElseThrow(()->new ResourceNotFoundException());
+        return stationMapper.mapToDto(station);
+    }
+
+    @Override
+    public List<StationDto> findNearestStations(double userLat, double userLng) {
+        List<StationDto> nearestStations = new ArrayList<>();
+        stationRepo.findAll().stream().forEach(station -> {
+            if (calculateDistance(userLat,userLng,station.getLatitude(),station.getLongitude()) <=11500)
+                nearestStations.add(stationMapper.mapToDto(station));
+        });
+        return nearestStations;
+    }
+
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371;
+
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c * 1000;
+    }
 }

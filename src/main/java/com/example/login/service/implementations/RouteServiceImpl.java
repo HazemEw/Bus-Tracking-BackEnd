@@ -75,8 +75,11 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public List<RouteDto> getRoutes() {
-        List<RouteDto> routeList = new ArrayList<>();
-        return routeList;
+        List<RouteDto> routeDtoList = new ArrayList<>();
+        routeRepo.findAll().stream().forEach(route -> {
+            routeDtoList.add(getRoute(route.getId()));
+        });
+        return routeDtoList;
     }
 
 }

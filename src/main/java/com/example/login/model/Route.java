@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +28,11 @@ public class Route {
             orphanRemoval = true
     )
     private List<RouteStation> stations = new ArrayList<>();
+
+
+
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
+    private List<Bus> buses;
 
     public void addStation(Station station , Long order) {
         RouteStation routeStation = new RouteStation(this,station,order);

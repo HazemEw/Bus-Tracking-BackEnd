@@ -9,4 +9,8 @@ public interface StationService {
     List<StationDto> getStations();
     StationDto addStation(StationDto stationDto);
     void deleteStation(Long stationTd);
+
+    StationDto findNearestStation(double userLat, double userLng);
+
+    List<StationDto> findNearestStations(double userLat, double userLng);
 }
