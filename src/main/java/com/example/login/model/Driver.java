@@ -1,9 +1,12 @@
 package com.example.login.model;
 
+import com.example.login.enums.DriverStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
+import java.util.List;
+
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -11,19 +14,22 @@ import lombok.*;
 @Setter
 @Builder
 @Table(name = "driver")
-public class Driver {
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+public class Driver extends User {
 
-    private  Long id;
     private String firstName;
     private String lastName;
     private String phone;
-    private String email;
     private String licenseNumber;
-    private String username;
-    private String password;
+    private String shift;
+    private String secondShift;
+    private DriverStatus driverStatus;
 
-    @OneToOne(mappedBy = "driver")
+
+
+    @ManyToOne
+    @JoinColumn(name = "bus_id")
     private Bus bus;
+
+
+
 }

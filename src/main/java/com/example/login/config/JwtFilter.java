@@ -23,9 +23,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final   JwtService jwtService;
 
-    private final   AdminDetailsService userDetailsService;
-
-
+    private final LoadUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(

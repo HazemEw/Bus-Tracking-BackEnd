@@ -4,7 +4,6 @@ import com.example.login.dtos.AuthResponse;
 import com.example.login.dtos.LoginRequest;
 import com.example.login.dtos.AdminDto;
 import com.example.login.service.AuthService;
-import com.example.login.service.implementations.AuthServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,19 +12,23 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AuthController {
    @Autowired
-   AuthService adminService;
+   AuthService authService;
 
 
-   @PostMapping("/add")
+   @PostMapping("/addAdmin")
     public AuthResponse registration(@RequestBody AdminDto adminDto){
-       return adminService.addAdmin(adminDto);
+      return authService.addAdmin(adminDto);
    }
 
-   @PostMapping("/login")
 
-   public AuthResponse loginAdmin(@RequestBody LoginRequest loginRequest){
+   @PostMapping("/adminLogin")
+   public AuthResponse adminLogin(@RequestBody LoginRequest loginRequest){
+      return authService.adminLogin(loginRequest);
+   }
 
-      return adminService.login(loginRequest);
+   @PostMapping("/driverLogin")
+   public AuthResponse driverLogin(@RequestBody LoginRequest loginRequest){
+      return authService.driverLogin(loginRequest);
    }
 
 }

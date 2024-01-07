@@ -1,11 +1,14 @@
 package com.example.login.controller;
 
+import com.example.login.dtos.BusDto;
 import com.example.login.dtos.DriverDto;
 import com.example.login.service.DriverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -37,9 +40,27 @@ public class DriverController {
         return driverService.getUnassignedDriversWithBus();
     }
 
-
     @DeleteMapping("/{id}")
     public void deleteDriver(@PathVariable Long id){
         driverService.deleteDriver(id);
+    }
+    @PostMapping("/startShift/{id}")
+     public BusDto startShift(@PathVariable Long id){
+        return driverService.startShift(id);
+    }
+
+    @PostMapping("/endShift/{id}")
+    public DriverDto endShift(@PathVariable Long id){
+        return driverService.endShift(id);
+    }
+
+    @PostMapping("/changeImage/{id}")
+    public DriverDto changeImage(@PathVariable Long id ,@RequestParam("image") MultipartFile image) throws IOException {
+        return driverService.changeImage(id,image);
+    }
+
+    @PutMapping("/{id}")
+    public DriverDto updateDriver(@PathVariable Long id ,@RequestBody DriverDto driverDto)  {
+        return driverService.updateDriver(id,driverDto);
     }
 }

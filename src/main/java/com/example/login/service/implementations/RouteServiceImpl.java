@@ -1,9 +1,11 @@
 package com.example.login.service.implementations;
 
+import com.example.login.dtos.BusDto;
 import com.example.login.dtos.RouteDto;
 import com.example.login.dtos.StationDto;
 import com.example.login.exceptions.DuplicateException;
 import com.example.login.exceptions.ResourceNotFoundException;
+import com.example.login.mapper.BusMapper;
 import com.example.login.mapper.RouteMapper;
 import com.example.login.mapper.StationMapper;
 import com.example.login.model.Route;
@@ -29,6 +31,8 @@ public class RouteServiceImpl implements RouteService {
 
     private final StationMapper stationMapper;
     private final RouteMapper routeMapper;
+
+    private final BusMapper busMapper;
 
     @Override
     public RouteDto addRoute(RouteDto routeDto) {
@@ -80,6 +84,19 @@ public class RouteServiceImpl implements RouteService {
             routeDtoList.add(getRoute(route.getId()));
         });
         return routeDtoList;
+    }
+
+    @Override
+    public List<BusDto> getBussInRoute(Long id) {
+        List<BusDto> busList = new ArrayList<>();
+        Route route = routeRepo.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Route","id",id)
+        );
+        route.getBuses().stream().forEach(bus -> {
+            busList.add(busMapper.mapToDto(bus));
+        });
+
+        return busList;
     }
 
 }

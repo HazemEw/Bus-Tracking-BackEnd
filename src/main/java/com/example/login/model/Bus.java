@@ -1,11 +1,14 @@
 package com.example.login.model;
 
+import com.example.login.enums.BusStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,12 +24,35 @@ public class Bus {
 
     private String permitNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "driver_id",referencedColumnName = "id")
-    private Driver driver;
+    private BusStatus busStatus;
+
+    private double latitude;
+
+    private double longitude;
+
+    @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Driver> drivers = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "route_id")
     private Route route;
+
+    public  boolean  isFullShift() {
+     if (this.drivers.size()==2)
+         return true;
+     else
+         return false;
+    }
+    public boolean hasMorningShift() {
+        return drivers
+                .stream()
+                .anyMatch(driver -> "Morning".equals(driver.getShift()));
+    }
+
+    public boolean hasEveningShift() {
+        return drivers
+                .stream()
+                .anyMatch(driver -> "Evening".equals(driver.getShift()));
+    }
 
 }

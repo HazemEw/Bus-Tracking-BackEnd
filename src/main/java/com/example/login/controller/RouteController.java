@@ -1,5 +1,6 @@
 package com.example.login.controller;
 
+import com.example.login.dtos.BusDto;
 import com.example.login.dtos.RouteDto;
 import com.example.login.dtos.StationDto;
 import com.example.login.service.RouteService;
@@ -28,5 +29,10 @@ public class RouteController {
     @GetMapping()
     public List<RouteDto> getRoutes(){
         return  routeService.getRoutes();
+    }
+
+    @GetMapping("/getBuss/{id}")
+    public List<BusDto> getBussInRoute(@PathVariable Long id){
+        return routeService.getBussInRoute(id);
     }
 }

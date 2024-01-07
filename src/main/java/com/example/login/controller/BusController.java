@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/buss")
@@ -19,6 +21,25 @@ public class BusController {
     @PostMapping()
     public BusDto addBus(@RequestBody  BusDto busDto){
         return busService.addBus(busDto);
+
     }
+    @GetMapping()
+    public List<BusDto> readBuss(){
+        return busService.readBuss();
+
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("/{id}")
+    public BusDto updateBus(@RequestBody  BusDto busDto, @PathVariable Long id){
+        return busService.updateBus(busDto,id);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("changeLocation/{id}")
+    public BusDto updateBusLocation(@RequestBody  BusDto busDto, @PathVariable Long id){
+        return busService.updatedBusLocation(busDto,id);
+    }
+
 
 }

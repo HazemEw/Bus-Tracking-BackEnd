@@ -1,12 +1,14 @@
 package com.example.login.controller;
 
 import com.example.login.dtos.StationDto;
+import com.example.login.dtos.TripRequest;
 import com.example.login.service.StationService;
 import com.example.login.service.implementations.StationServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -51,4 +53,24 @@ public class StationController {
             @RequestParam double userLng) {
         return stationService.findNearestStations(userLat,userLng);
     }
+
+    @GetMapping("/StationsByCity")
+    public List<StationDto> findStationsByCity(
+            @RequestParam String cityName) {
+        return stationService.getStationsByCity(cityName);
+    }
+
+    @PostMapping("/StationToTravel")
+    public List<StationDto> findNearestStationToTravel(
+            @RequestBody TripRequest tripRequest) {
+        return stationService.findNearestStationToTravel(tripRequest);
+    }
+
+    @PutMapping("/{id}")
+    public StationDto updateStation(@PathVariable Long id ,
+            @RequestBody StationDto stationDto) {
+        return stationService.updateStation(id,stationDto);
+    }
+
+
 }

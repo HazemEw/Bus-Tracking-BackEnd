@@ -6,5 +6,6 @@ import com.example.login.dtos.LoginRequest;
 
 public interface AuthService {
     AuthResponse addAdmin(AdminDto adminDto);
-    AuthResponse login(LoginRequest loginRequest);
+    AuthResponse adminLogin(LoginRequest loginRequest);
+    AuthResponse driverLogin(LoginRequest loginRequest);
 }

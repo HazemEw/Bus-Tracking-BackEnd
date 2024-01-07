@@ -21,6 +21,7 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String city;
     private double latitude;
     private double longitude;
 

@@ -1,5 +1,6 @@
 package com.example.login.service;
 
+import com.example.login.dtos.BusDto;
 import com.example.login.dtos.RouteDto;
 
 import java.util.List;
@@ -10,4 +11,6 @@ public interface RouteService {
     RouteDto getRoute(Long id);
 
     List<RouteDto> getRoutes();
+
+    List<BusDto> getBussInRoute(Long id);
 }
