@@ -22,9 +22,11 @@ public class Driver extends User {
     private String licenseNumber;
     private String shift;
     private String secondShift;
+
     private DriverStatus driverStatus;
 
-
+    @OneToMany(mappedBy = "driver")
+    private List<Notification> notifications;
 
     @ManyToOne
     @JoinColumn(name = "bus_id")

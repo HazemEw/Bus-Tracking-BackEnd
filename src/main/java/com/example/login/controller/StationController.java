@@ -2,6 +2,7 @@ package com.example.login.controller;
 
 import com.example.login.dtos.StationDto;
 import com.example.login.dtos.TripRequest;
+import com.example.login.dtos.TripResponse;
 import com.example.login.service.StationService;
 import com.example.login.service.implementations.StationServiceImpl;
 import lombok.AllArgsConstructor;
@@ -61,7 +62,7 @@ public class StationController {
     }
 
     @PostMapping("/StationToTravel")
-    public List<StationDto> findNearestStationToTravel(
+    public TripResponse findNearestStationToTravel(
             @RequestBody TripRequest tripRequest) {
         return stationService.findNearestStationToTravel(tripRequest);
     }

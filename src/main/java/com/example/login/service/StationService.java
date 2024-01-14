@@ -2,6 +2,7 @@ package com.example.login.service;
 
 import com.example.login.dtos.StationDto;
 import com.example.login.dtos.TripRequest;
+import com.example.login.dtos.TripResponse;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface StationService {
 
     List<StationDto> getStationsByCity(String cityName);
 
-    List<StationDto> findNearestStationToTravel(TripRequest tripRequest);
+    TripResponse findNearestStationToTravel(TripRequest tripRequest);
 
     StationDto updateStation(Long id, StationDto stationDto);
 }

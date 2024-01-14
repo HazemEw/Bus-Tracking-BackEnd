@@ -2,6 +2,7 @@ package com.example.login.service.implementations;
 
 import com.example.login.dtos.StationDto;
 import com.example.login.dtos.TripRequest;
+import com.example.login.dtos.TripResponse;
 import com.example.login.exceptions.CustomException;
 import com.example.login.exceptions.DuplicateException;
 import com.example.login.exceptions.ResourceNotFoundException;
@@ -121,7 +122,8 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<StationDto> findNearestStationToTravel(TripRequest tripRequest) {
+    public TripResponse findNearestStationToTravel(TripRequest tripRequest) {
+        TripResponse tripResponse = new TripResponse();
         List<StationDto> stationDtoList = new ArrayList<>();
         Station destinationStation = stationRepo.findByName(tripRequest.getStationDto().getName()).get();
         List<Route> routeList = new ArrayList<>();
@@ -167,7 +169,9 @@ public class StationServiceImpl implements StationService {
                 finalStationList.add(stationDtoList.get(i));
             }
         }
-        return finalStationList;
+        tripResponse.setStationsList(finalStationList);
+        tripResponse.setRouteId(routes.get(0).getId());
+        return tripResponse;
     }
 
     @Override

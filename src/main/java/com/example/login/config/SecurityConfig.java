@@ -52,6 +52,8 @@ public class SecurityConfig {
                 .permitAll()
                 .requestMatchers("/api/buss/**")
                 .permitAll()
+                .requestMatchers("/api/notifications/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

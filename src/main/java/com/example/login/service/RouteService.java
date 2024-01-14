@@ -6,7 +6,7 @@ import com.example.login.dtos.RouteDto;
 import java.util.List;
 
 public interface RouteService {
-      RouteDto addRoute(RouteDto routeDto);
+    RouteDto addRoute(RouteDto routeDto);
 
     RouteDto getRoute(Long id);
 

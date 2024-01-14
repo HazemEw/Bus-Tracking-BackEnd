@@ -54,6 +54,7 @@ public class BusServiceImpl implements BusService {
         }else
             throw new DuplicateException(busDto.getPermitNumber());
 
+
     }
 
     @Override

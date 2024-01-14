@@ -36,7 +36,7 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public RouteDto addRoute(RouteDto routeDto) {
-        if (!routeRepo.findByName(routeDto.getName()).isPresent()) {
+        if (routeRepo.findByName(routeDto.getName()).isEmpty()) {
             Route route = routeMapper.mapToRoute(routeDto);
             List<StationDto> stationDtoList = routeDto.getStationList();
             IntStream.range(0, stationDtoList.size())
@@ -51,7 +51,7 @@ public class RouteServiceImpl implements RouteService {
             List<RouteStation> stations = new ArrayList<>();
             stations = route.getStations();
             List<StationDto> stationList = new ArrayList<>();
-            stations.stream().forEach(routeStation -> {
+            stations.forEach(routeStation -> {
                 stationList.add(stationMapper.mapToDto(routeStation.getStation()));
             });
 
@@ -68,7 +68,7 @@ public class RouteServiceImpl implements RouteService {
         );
         RouteDto routeDto = routeMapper.mapToDto(route);
         List<StationDto> stationList = new ArrayList<>();
-        route.getStations().stream().forEach(
+        route.getStations().forEach(
                 routeStation -> {
                     stationList.add(stationMapper.mapToDto(routeStation.getStation()));
                 }
@@ -80,7 +80,7 @@ public class RouteServiceImpl implements RouteService {
     @Override
     public List<RouteDto> getRoutes() {
         List<RouteDto> routeDtoList = new ArrayList<>();
-        routeRepo.findAll().stream().forEach(route -> {
+        routeRepo.findAll().forEach(route -> {
             routeDtoList.add(getRoute(route.getId()));
         });
         return routeDtoList;
@@ -92,7 +92,7 @@ public class RouteServiceImpl implements RouteService {
         Route route = routeRepo.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Route","id",id)
         );
-        route.getBuses().stream().forEach(bus -> {
+        route.getBuses().forEach(bus -> {
             busList.add(busMapper.mapToDto(bus));
         });
 

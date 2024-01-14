@@ -22,17 +22,18 @@ public class RouteController {
     }
 
     @GetMapping("/{id}")
-    public RouteDto getRoute(@PathVariable Long id){
-        return  routeService.getRoute(id);
+    public RouteDto getRoute(@PathVariable Long id) {
+        return routeService.getRoute(id);
     }
 
     @GetMapping()
-    public List<RouteDto> getRoutes(){
-        return  routeService.getRoutes();
+    public List<RouteDto> getRoutes() {
+        return routeService.getRoutes();
     }
 
-    @GetMapping("/getBuss/{id}")
-    public List<BusDto> getBussInRoute(@PathVariable Long id){
+    @GetMapping("/{id}/getBuss")
+    public List<BusDto> getBussInRoute(@PathVariable Long id) {
         return routeService.getBussInRoute(id);
     }
+
 }

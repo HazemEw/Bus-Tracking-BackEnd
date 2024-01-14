@@ -14,14 +14,20 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class    BusDto {
+public class  BusDto {
 
     private Long id;
+
     private String permitNumber;
+
     private RouteDto route;
+
     private List<DriverDto> drivers = new ArrayList<>();
+
     private BusStatus busStatus;
+
     private double latitude;
+
     private double longitude;
 
 }
