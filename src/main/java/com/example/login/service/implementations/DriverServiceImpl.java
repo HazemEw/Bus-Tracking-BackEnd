@@ -39,7 +39,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverDto addDriver(DriverDto driverDto) {
-        if (!driverRepo.findByUsername(driverDto.getUsername()).isPresent()) {
+        if (driverRepo.findByUsername(driverDto.getUsername()).isEmpty()) {
             Driver driver = driverMapper.mapToDriver(driverDto);
             driver.setEmail(driverDto.getEmail());
             driver.setRole(Role.DRIVER);
@@ -56,8 +56,7 @@ public class DriverServiceImpl implements DriverService {
         Driver driver = driverRepo.findById(driverId).orElseThrow(
                 ()->new ResourceNotFoundException("Driver","id",driverId)
         );
-        DriverDto driverDto = driverMapper.mapToDto(driver);
-        return driverDto;
+        return driverMapper.mapToDto(driver);
     }
 
     @Override
@@ -73,7 +72,7 @@ public class DriverServiceImpl implements DriverService {
     public List<DriverDto> getUnassignedDriversWithBus() {
         List<Driver> unassignedDrivers = driverRepo.findAllByBusIsNull();
         List<DriverDto> unassignedDriversDto= new ArrayList<>();
-        unassignedDrivers.stream().forEach(driver -> {
+        unassignedDrivers.forEach(driver -> {
             unassignedDriversDto.add(driverMapper.mapToDto(driver));
         });
         return unassignedDriversDto;
@@ -108,7 +107,7 @@ public class DriverServiceImpl implements DriverService {
         }
 
         Bus bus = driver.getBus();
-        bus.getDrivers().stream().forEach(driver1 -> {
+        bus.getDrivers().forEach(driver1 -> {
             if (driver1.getDriverStatus() == DriverStatus.IN_SHIFT)
                 throw new CustomException("Another driver did not finish the shift on this bus. please until he finished the shift", HttpStatus.BAD_REQUEST);
         });
