@@ -2,6 +2,7 @@ package com.example.login.service.implementations;
 
 import com.example.login.dtos.BusDto;
 import com.example.login.dtos.DriverDto;
+import com.example.login.dtos.RouteDto;
 import com.example.login.enums.BusStatus;
 import com.example.login.enums.DriverStatus;
 import com.example.login.enums.Role;
@@ -10,11 +11,13 @@ import com.example.login.exceptions.DuplicateException;
 import com.example.login.exceptions.ResourceNotFoundException;
 import com.example.login.mapper.BusMapper;
 import com.example.login.mapper.DriverMapper;
+import com.example.login.mapper.RouteMapper;
 import com.example.login.model.Bus;
 import com.example.login.model.Driver;
 import com.example.login.repo.BusRepo;
 import com.example.login.repo.DriverRepo;
 import com.example.login.service.DriverService;
+import com.example.login.service.RouteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,8 +36,12 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepo driverRepo;
     private final DriverMapper driverMapper;
 
+    private final RouteService routeService;
+
     private final BusRepo busRepo;
     private final BusMapper busMapper;
+
+    private final RouteMapper routeMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -92,19 +99,6 @@ public class DriverServiceImpl implements DriverService {
                 ()-> new ResourceNotFoundException("Driver","id",id)
         );
         LocalTime currentTime = LocalTime.now();
-        if (driver.getSecondShift()!= null){
-            if ((currentTime.isBefore(LocalTime.parse("05:55")) || currentTime.isAfter(LocalTime.parse("07:00")))) {
-                throw new CustomException("shift cannot start before 5:55 AM Or after 7:00 AM", HttpStatus.BAD_REQUEST);
-            }
-
-        }
-        if (driver.getShift().equalsIgnoreCase("Morning") && (currentTime.isBefore(LocalTime.parse("05:55")) || currentTime.isAfter(LocalTime.parse("07:00")))) {
-            throw new CustomException("Morning shift cannot start before 5:55 AM Or after 7:00 AM", HttpStatus.BAD_REQUEST);
-        }
-
-        if (driver.getShift().equalsIgnoreCase("Evening") && (currentTime.isBefore(LocalTime.parse("14:55")) || currentTime.isAfter(LocalTime.parse("16:00")))) {
-            throw new CustomException("Evening shift cannot start before 2:55 PM Or after 4:00 PM", HttpStatus.BAD_REQUEST);
-        }
 
         Bus bus = driver.getBus();
         bus.getDrivers().forEach(driver1 -> {
@@ -156,5 +150,13 @@ public class DriverServiceImpl implements DriverService {
         driver.setEmail(driverDto.getEmail());
         Driver savedDriver = driverRepo.save(driver);
         return driverMapper.mapToDto(savedDriver);
+    }
+
+    @Override
+    public RouteDto getDriverRoute(Long id) {
+        Driver driver = driverRepo.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Driver","id",id)
+        );
+        return routeService.getRoute(driver.getBus().getRoute().getId());
     }
 }

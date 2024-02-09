@@ -31,9 +31,8 @@ public class StationServiceImpl implements StationService {
 
     private final RouteRepo routeRepo;
 
-
     public StationDto addStation(StationDto stationDto) {
-        if (!stationRepo.findByName(stationDto.getName()).isPresent()) {
+        if (stationRepo.findByName(stationDto.getName()).isEmpty()) {
             Station station = stationMapper.mapToStation(stationDto);
             station.setRoutes(new ArrayList<RouteStation>());
             stationRepo.save(station);
@@ -54,8 +53,7 @@ public class StationServiceImpl implements StationService {
         Station station = stationRepo.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Station", "id", id)
         );
-        StationDto stationDto = stationMapper.mapToDto(station);
-        return stationDto;
+        return stationMapper.mapToDto(station);
     }
 
     public void deleteStation(Long id) {
@@ -78,31 +76,29 @@ public class StationServiceImpl implements StationService {
         List<RouteStation> stations = new ArrayList<>();
         stations = route.getStations();
         List<Station> stationList = new ArrayList<>();
-        stations.stream().forEach(routeStation -> {
+        stations.forEach(routeStation -> {
             stationList.add(routeStation.getStation());
         });
 
-        Station station = stationList.stream()
+        return stationList.stream()
                 .min((station1, station2) -> Double.compare(
                         calculateDistance(userLat, userLng, station1.getLatitude(), station1.getLongitude()),
                         calculateDistance(userLat, userLng, station2.getLatitude(), station2.getLongitude())))
                 .orElseThrow(() -> new ResourceNotFoundException());
-        return station;
     }
 
     public Station findNearestStationInStationList(double userLat, double userLng, List<Station> stationList) {
-        Station station = stationList.stream()
+        return stationList.stream()
                 .min((station1, station2) -> Double.compare(
                         calculateDistance(userLat, userLng, station1.getLatitude(), station1.getLongitude()),
                         calculateDistance(userLat, userLng, station2.getLatitude(), station2.getLongitude())))
                 .orElseThrow(() -> new ResourceNotFoundException());
-        return station;
     }
 
     @Override
     public List<StationDto> findNearestStations(double userLat, double userLng) {
         List<StationDto> nearestStations = new ArrayList<>();
-        stationRepo.findAll().stream().forEach(station -> {
+        stationRepo.findAll().forEach(station -> {
             if (calculateDistance(userLat, userLng, station.getLatitude(), station.getLongitude()) <= 11500)
                 nearestStations.add(stationMapper.mapToDto(station));
         });
@@ -112,7 +108,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public List<StationDto> getStationsByCity(String cityName) {
         List<StationDto> stationDtoList = new ArrayList<>();
-        stationRepo.findByCity(cityName).stream().forEach(station -> {
+        stationRepo.findByCity(cityName).forEach(station -> {
             stationDtoList.add(stationMapper.mapToDto(station));
         });
         if (stationDtoList.isEmpty())
@@ -127,19 +123,18 @@ public class StationServiceImpl implements StationService {
         List<StationDto> stationDtoList = new ArrayList<>();
         Station destinationStation = stationRepo.findByName(tripRequest.getStationDto().getName()).get();
         List<Route> routeList = new ArrayList<>();
-        destinationStation.getRoutes().stream().forEach(routeStation -> {
+        destinationStation.getRoutes().forEach(routeStation -> {
             routeList.add(routeStation.getRoute());
 
         });
 
         List<Station> allStation = new ArrayList<>();
-        for (int i = 0; i < routeList.size(); i++) {
-            routeList.get(i).getStations().stream().forEach(routeStation -> {
+        for (Route route : routeList) {
+            route.getStations().forEach(routeStation -> {
                 allStation.add(routeStation.getStation());
             });
         }
         Station nearestStation = findNearestStationInStationList(tripRequest.getCurrentLatitude(), tripRequest.getCurrentLongitude(), allStation);
-
         List<Route> routes = routeRepo.findRoutesByStations(nearestStation, destinationStation);
         routes.get(0).getStations().forEach(routeStation -> {
             stationDtoList.add(stationMapper.mapToDto(routeStation.getStation()));
@@ -153,7 +148,6 @@ public class StationServiceImpl implements StationService {
                 break;
             }
         }
-
         for (int i = 0; i < stationDtoList.size(); i++) {
             if (stationDtoList.get(i).getName().equals(destinationStation.getName())) {
                 destinationStationOrder = i;
@@ -184,18 +178,25 @@ public class StationServiceImpl implements StationService {
         return  stationMapper.mapToDto(savedStation);
     }
 
+    @Override
+    public List<StationDto> findStationByCity(String cityName) {
+        List<StationDto> stationDtoList = new ArrayList<>();
+        List<Station> stationList = stationRepo.findByCity(cityName);
+        stationList.forEach(station -> {
+            stationDtoList.add(stationMapper.mapToDto(station));
+        });
+        return stationDtoList;
+    }
+
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
-
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
-
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                 Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
                         Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
         return R * c * 1000;
     }
+
 }

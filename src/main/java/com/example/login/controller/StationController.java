@@ -48,6 +48,13 @@ public class StationController {
         return stationService.findNearestStation(userLat,userLng);
     }
 
+    @GetMapping("/getByCity")
+    public List<StationDto> findStationByCity(
+            @RequestParam String cityName) {
+        return stationService.findStationByCity(cityName);
+    }
+
+
     @GetMapping("/nearestStations")
     public List<StationDto> findNearestStations(
             @RequestParam double userLat,

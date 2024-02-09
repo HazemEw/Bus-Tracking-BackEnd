@@ -2,6 +2,7 @@ package com.example.login.controller;
 
 import com.example.login.dtos.BusDto;
 import com.example.login.dtos.DriverDto;
+import com.example.login.dtos.RouteDto;
 import com.example.login.service.DriverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -63,4 +64,10 @@ public class DriverController {
     public DriverDto updateDriver(@PathVariable Long id ,@RequestBody DriverDto driverDto)  {
         return driverService.updateDriver(id,driverDto);
     }
+
+    @GetMapping("/getRoute/{id}")
+    public RouteDto getDriverRoute(@PathVariable Long id){
+        return driverService.getDriverRoute(id);
+    }
+
 }

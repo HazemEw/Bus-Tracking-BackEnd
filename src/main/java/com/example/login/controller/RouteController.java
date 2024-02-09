@@ -30,6 +30,10 @@ public class RouteController {
     public List<RouteDto> getRoutes() {
         return routeService.getRoutes();
     }
+    @GetMapping("/routesByCity")
+    public List<RouteDto> getRoutes(@RequestParam String cityName) {
+        return routeService.getRoutesByCity(cityName);
+    }
 
     @GetMapping("/{id}/getBuss")
     public List<BusDto> getBussInRoute(@PathVariable Long id) {

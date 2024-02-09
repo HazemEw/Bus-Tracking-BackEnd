@@ -21,4 +21,6 @@ public interface StationService {
     TripResponse findNearestStationToTravel(TripRequest tripRequest);
 
     StationDto updateStation(Long id, StationDto stationDto);
+
+    List<StationDto> findStationByCity(String cityName);
 }

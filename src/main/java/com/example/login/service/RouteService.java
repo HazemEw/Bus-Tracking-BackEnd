@@ -13,4 +13,6 @@ public interface RouteService {
     List<RouteDto> getRoutes();
 
     List<BusDto> getBussInRoute(Long id);
+
+    List<RouteDto> getRoutesByCity(String cityName);
 }

@@ -106,21 +106,23 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public NotificationDto acceptNotification(Long id) {
+    public NotificationDto acceptNotification(Long id , String massage) {
         Notification notification = notificationRepo.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Notification","id",id)
         );
         notification.setNotificationStatus(NotificationStatus.ACCEPTED);
+        notification.setMassage(massage);
         Notification savedNotification = notificationRepo.save(notification);
         return notificationMapper.mapToDto(savedNotification);
 
     }
 
     @Override
-    public NotificationDto rejectNotification(Long id) {
+    public NotificationDto rejectNotification(Long id ,String massage) {
         Notification notification = notificationRepo.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("Notification","id",id)
         );
+        notification.setMassage(massage);
         notification.setNotificationStatus(NotificationStatus.REJECTED);
         Notification savedNotification = notificationRepo.save(notification);
         return notificationMapper.mapToDto(savedNotification);

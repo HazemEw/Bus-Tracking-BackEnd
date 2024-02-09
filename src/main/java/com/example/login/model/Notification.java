@@ -25,6 +25,8 @@ public class Notification {
 
     private String note;
 
+    private String massage;
+
     private String notificationType;
 
     private NotificationStatus notificationStatus;

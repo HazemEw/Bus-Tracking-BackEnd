@@ -26,7 +26,11 @@ public class BusController {
     @GetMapping()
     public List<BusDto> readBuss(){
         return busService.readBuss();
+    }
 
+    @GetMapping("/{id}")
+    public BusDto readBus(@PathVariable Long id){
+        return busService.readBus(id);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -39,6 +43,11 @@ public class BusController {
     @PutMapping("changeLocation/{id}")
     public BusDto updateBusLocation(@RequestBody  BusDto busDto, @PathVariable Long id){
         return busService.updatedBusLocation(busDto,id);
+    }
+
+    @GetMapping("/byPermitNumber")
+    public BusDto getByPermitNumber(@RequestParam String permitNumber){
+        return busService.getByPermitNumber(permitNumber);
     }
 
 

@@ -19,4 +19,5 @@ public class NotificationDto {
     private String notificationType;
     private NotificationStatus notificationStatus;
     private Long driverId;
+    private String massage;
 }

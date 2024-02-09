@@ -1,5 +1,6 @@
 package com.example.login.dtos;
 
+import com.example.login.enums.DriverStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class DriverDto {
     private String username;
     private String shift;
     private String secondShift;
+    private DriverStatus driverStatus;
     private byte[] image;
 }

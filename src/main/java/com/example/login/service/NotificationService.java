@@ -21,9 +21,9 @@ public interface NotificationService {
 
     List<NotificationDto> getAbsentInProcess();
 
-    NotificationDto acceptNotification(Long id);
+    NotificationDto acceptNotification(Long id ,String massage);
 
-    NotificationDto rejectNotification(Long id);
+    NotificationDto rejectNotification(Long id, String massage);
 
 
 

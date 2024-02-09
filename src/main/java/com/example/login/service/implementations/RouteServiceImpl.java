@@ -90,13 +90,31 @@ public class RouteServiceImpl implements RouteService {
     public List<BusDto> getBussInRoute(Long id) {
         List<BusDto> busList = new ArrayList<>();
         Route route = routeRepo.findById(id).orElseThrow(
-                ()-> new ResourceNotFoundException("Route","id",id)
+                () -> new ResourceNotFoundException("Route", "id", id)
         );
         route.getBuses().forEach(bus -> {
             busList.add(busMapper.mapToDto(bus));
         });
 
         return busList;
+    }
+
+    @Override
+    public List<RouteDto> getRoutesByCity(String cityName) {
+        List<Route> routeList = routeRepo.findAll();
+        List<RouteDto> routeDtoList = new ArrayList<>();
+        for (Route route : routeList) {
+            boolean hasMatchingCity = route.getStations().stream()
+                    .anyMatch(routeStation -> {
+                        return routeStation.getStation().getCity() != null &&
+                                routeStation.getStation().getCity().equalsIgnoreCase(cityName);
+                    });
+            if (hasMatchingCity) {
+                routeDtoList.add(routeMapper.mapToDto(route));
+            }
+        }
+
+        return routeDtoList;
     }
 
 }

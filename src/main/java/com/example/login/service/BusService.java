@@ -10,5 +10,8 @@ public interface BusService {
     BusDto readBus(Long id);
     List<BusDto> readBuss();
     BusDto updateBus(BusDto busDto ,Long id);
+
     BusDto updatedBusLocation(BusDto busDto,Long id);
+
+    BusDto getByPermitNumber(String permitNumber);
 }

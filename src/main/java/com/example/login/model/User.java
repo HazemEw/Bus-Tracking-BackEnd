@@ -14,6 +14,7 @@ import java.util.Collection;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "user")
 public class User implements UserDetails {
 
     @Id

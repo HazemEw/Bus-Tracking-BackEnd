@@ -59,7 +59,10 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public BusDto readBus(Long id) {
-        return null;
+        Bus bus = busRepo.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Bus","id",id)
+        );
+        return busMapper.mapToDto(bus);
     }
 
     @Override
@@ -91,6 +94,15 @@ public class BusServiceImpl implements BusService {
         bus.setLatitude(busDto.getLatitude());
         bus.setLongitude(busDto.getLongitude());
         Bus savedBus = busRepo.save(bus);
+        return busMapper.mapToDto(bus);
+    }
+
+    @Override
+    public BusDto getByPermitNumber(String permitNumber) {
+        Bus bus = busRepo.findByPermitNumber(permitNumber).orElseThrow(
+                ()-> new ResourceNotFoundException("Bus","Permit Number" ,permitNumber)
+        );
+
         return busMapper.mapToDto(bus);
     }
 }

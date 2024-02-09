@@ -54,12 +54,12 @@ public class NotificationController {
     }
 
     @PutMapping("/accept/{id}")
-    public NotificationDto acceptNotification(@PathVariable Long id) {
-        return notificationService.acceptNotification(id);
+    public NotificationDto acceptNotification(@PathVariable Long id , @RequestParam String massage ) {
+        return notificationService.acceptNotification(id,massage);
     }
 
     @PutMapping("/reject/{id}")
-    public NotificationDto rejectNotification(@PathVariable Long id) {
-        return notificationService.rejectNotification(id);
+    public NotificationDto rejectNotification(@PathVariable Long id , @RequestParam String massage) {
+        return notificationService.rejectNotification(id,massage);
     }
 }
